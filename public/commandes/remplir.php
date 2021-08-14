@@ -3,6 +3,10 @@ require '../../vendor/autoload.php';
 
 use Faker\Factory;
 
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
+
 $pdo = new PDO('mysql:host=localhost;dbname=blog', 'root', '', [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 ]);
@@ -10,6 +14,7 @@ $pdo->exec('SET FOREIGN_KEY_CHECKS = 0 ');
 $pdo->exec('TRUNCATE TABLE 	post_category');
 $pdo->exec('TRUNCATE TABLE 	category ');
 $pdo->exec('TRUNCATE TABLE post	 ');
+$pdo->exec('TRUNCATE TABLE users	 ');
 $pdo->exec('SET FOREIGN_KEY_CHECKS = 1 ');
 
 $pdo->exec('TRUNCATE TABLE users');
@@ -30,4 +35,8 @@ foreach ($posts  as $post) {
     foreach ($randomCategorie as $categorie) {
         $pdo->exec(" INSERT INTO post_category SET post_id = $post , category_id =$categorie");
     }
+}
+for ($i = 0; $i < 30; $i++) {
+    $pass = (string)password_hash($faker->name(), PASSWORD_BCRYPT);
+    $pdo->exec("INSERT INTO  users SET username= '{$faker->name()}', password = '$pass'  ");
 }
