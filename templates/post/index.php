@@ -1,7 +1,4 @@
 <?php
-require TEMPLATES . '/layouts/header.php';
+$title = 'welcome to our blog';
 ?>
 <h1>blog</h1>
-<?php
-require TEMPLATES . '/layouts/footer.php';
-?>
